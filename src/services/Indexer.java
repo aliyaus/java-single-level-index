@@ -9,6 +9,27 @@ import java.nio.charset.StandardCharsets;
 
 public class Indexer {
 
+    /**
+     * Creates an index file for the given input file. The index file contains the
+     * key and position of each record in the input file. The key is the first
+     * `keyLength`
+     * characters of each record. The method reads the input file, extracts the key
+     * and
+     * position of each record, and sorts the records by key. Then, it writes the
+     * sorted records to the output file in binary format, with each record
+     * consisting of
+     * the key (encoded in ASCII) followed by its position (as a long value). It
+     * also writes
+     * the records to a text file for verification. If the output file already
+     * exists, it is overwritten.
+     *
+     * @param inputFileName  the name of the input file to be indexed
+     * @param outputFileName the name of the output file to which the index will be
+     *                       written
+     * @param keyLength      the length of the key to be used for indexing
+     * @throws IOException if there is an error reading the input file or writing
+     *                     the index files
+     */
     public void createIndex(String inputFileName, String outputFileName, int keyLength) throws IOException {
         RandomAccessFile inputFile = new RandomAccessFile(inputFileName, "r");
         FileOutputStream outputFile = new FileOutputStream(outputFileName, false);
@@ -52,6 +73,18 @@ public class Indexer {
 
     }
 
+    /**
+     * 
+     * This method reads the index file and corresponding data file and lists all
+     * records by seeking to the correct position in the data file, reading the data
+     * record,
+     * and printing the combined record.
+     * 
+     * @param dataFileName  The name of the data file to be read.
+     * @param indexFileName The name of the index file to be read.
+     * @param keyLength     The length of the key value in each record.
+     * @throws IOException If an I/O error occurs while reading the files.
+     */
     public void listRecords(String dataFileName, String indexFileName, int keyLength) throws IOException {
         // Open index file
         RandomAccessFile indexFile = new RandomAccessFile(indexFileName, "r");
@@ -94,6 +127,16 @@ public class Indexer {
         dataFile.close();
     }
 
+    /**
+     * 
+     * Searches for a specific record in a data file using an index file and binary search algorithm.
+     * 
+     * @param dataFileName  the name of the data file to be searched
+     * @param indexFileName the name of the index file to be used
+     * @param keyLength     the length of the key field in bytes
+     * @param keyValue      the key value of the record to be searched
+     * @throws IOException if an I/O error occurs while reading the files
+     */
     public void searchRecords(String dataFileName, String indexFileName, int keyLength, String keyValue)
             throws IOException {
 
@@ -137,7 +180,7 @@ public class Indexer {
                 inputFile.seek(pointer);
                 String result = inputFile.readLine();
                 System.out.println(result);
-                return; 
+                return;
             } else if (comparison < 0) {
                 right = mid - 1;
             } else {
