@@ -103,7 +103,6 @@ public class Indexer {
         RandomAccessFile indexFile = new RandomAccessFile(indexFileName, "r");
 
         // Determine the length of each record in the index file
-        // int recordLength = keyValue.getBytes(StandardCharsets.US_ASCII).length + Long.BYTES + 1;
         int recordLength = keyLength + Long.BYTES + 1;
 
         // Determine the number of records in the index file
@@ -121,9 +120,8 @@ public class Indexer {
             indexFile.seek(offset);
 
             // Read the key from the index file
-            // byte[] keyBytes = new byte[keyValue.length()];
             byte[] keyBytes = new byte[keyLength];
-            
+
             indexFile.read(keyBytes);
             String key = new String(keyBytes, StandardCharsets.US_ASCII);
 
